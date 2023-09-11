@@ -1,0 +1,83 @@
+# Made by Didgerdoo
+
+on placeholderapi placeholder request for the prefix "lives":
+    if the identifier is "livesleft":
+        set the result to "%{lives::%player's uuid%}%"
+    if the identifier is "livesmax":
+        set the result to "%{livesmax::%player's uuid%}%"
+
+options:
+
+    adminperms: lives.admin
+    prefix: &x&f&f&1&5&1&5&lForRealVanilla &7&o> &x&f&f&1&5&1&5
+    announce_prefix: &x&f&f&1&5&1&5&lForRealVanilla
+    time: 30m
+    reason: Ran out of lives! 
+                                                                 
+on load:
+    send "██╗  ██╗ █████╗ ██████╗ ██████╗  ██████╗ ██████╗ ██████╗ ███████╗" to console
+    send "██║  ██║██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔═══██╗██╔══██╗██╔════╝" to console
+    send "███████║███████║██████╔╝██║  ██║██║     ██║   ██║██║  ██║█████╗  " to console
+    send "██╔══██║██╔══██║██╔══██╗██║  ██║██║     ██║   ██║██║  ██║██╔══╝  " to console
+    send "██║  ██║██║  ██║██║  ██║██████╔╝╚██████╗╚██████╔╝██████╔╝███████╗" to console
+    send "╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝" to console
+    send " " to console
+    send "            ██╗     ██╗██╗   ██╗███████╗███████╗                 " to console
+    send "            ██║     ██║██║   ██║██╔════╝██╔════╝                 " to console
+    send "            ██║     ██║██║   ██║█████╗  ███████╗                 " to console
+    send "            ██║     ██║╚██╗ ██╔╝██╔══╝  ╚════██║                 " to console
+    send "            ███████╗██║ ╚████╔╝ ███████╗███████║                 " to console
+    send "            ╚══════╝╚═╝  ╚═══╝  ╚══════╝╚══════╝                 " to console
+    send "                      -by DidgerDoo                                      " to console
+                                                                 
+
+on join:
+    if {players::*} does not contain player's uuid:
+        add player's uuid to {players::*}
+        broadcast "" and "{@announce_prefix}" and "&7| &x&f&f&1&5&1&5%player% has joined for the first time! &c[##%size of all offline players%]"
+
+    if {lives::%player's uuid%} is not set:
+        set {lives::%player's uuid%} to 3
+    
+    if {lives::%player's uuid%} = 0:
+        set {livesmax::%player's uuid%} to 3
+
+    if {lives::%player's uuid%} is 0:
+        set {lives::%player's uuid%} to 3
+    
+    if {livesmax::%player's uuid%} is not set:
+        set {livesmax::%player's uuid%} to 3
+
+    wait 20 ticks
+    send "{@prefix}You have &l%{lives::%player's uuid%}% &x&f&f&1&5&1&5lives remaining. Good luck!"
+
+on death of player:
+    if {lives::%victim's uuid%} is greater than 0:
+        subtract 1 from {lives::%victim's uuid%}
+        if attacker is not victim:
+            add 1 to {livesmax::%attacker's uuid%}
+        send "{@prefix}You now have &l%{lives::%victim's uuid%}% &x&f&f&1&5&1&5lives left! Good luck!" to victim
+    if {lives::%victim's uuid%} = 0:
+        execute console command "/tempban %victim% {@time} {@reason}"
+
+command /lives:
+    trigger:
+        send "{@prefix}You have &l%{lives::%player's uuid%}% &x&f&f&1&5&1&5lives remaning. Good luck!"
+
+command /resetlives [<text>] [<player>]:
+    permission: {@adminperms}
+    trigger:
+        if arg 1 is "all":
+            loop all players:
+                set {lives::%loop-player's uuid%} to 3
+            loop all players:
+                set {lives.%loop-player's uuid%} to 3
+            send "{@prefix}reset all players lives."
+        if arg 1 is "player":
+            set {lives::%player's uuid%} to 3
+
+command /givelives [<player>] [<int>]:
+    permission: op
+    executable by: console, players
+    trigger:
+        add arg-2 to {lives::%arg-1's uuid%}
