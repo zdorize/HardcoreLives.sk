@@ -1,4 +1,4 @@
-# Made by AmazingPika
+# Made by Dorize
 
 on placeholderapi placeholder request for the prefix "lives":
     if the identifier is "livesleft":
@@ -28,7 +28,7 @@ on load:
     send "            ██║     ██║╚██╗ ██╔╝██╔══╝  ╚════██║                 " to console
     send "            ███████╗██║ ╚████╔╝ ███████╗███████║                 " to console
     send "            ╚══════╝╚═╝  ╚═══╝  ╚══════╝╚══════╝                 " to console
-    send "                      -by AmazingPika                                      " to console
+    send "                      -by Dorize                                 " to console
                                                                  
 
 on join:
